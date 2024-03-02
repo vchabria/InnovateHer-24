@@ -1,6 +1,40 @@
+
+import openai
 from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime, timedelta
+
 app = Flask(__name__)
+
+# Your OpenAI API key
+openai.api_key = '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'
+
+def fetch_information_from_chatgpt(day):
+    """
+    Fetches information from ChatGPT based on the day of the menstrual cycle.
+    """
+    try:
+        response = openai.Completion.create(
+            engine="text-davinci-003",  # You can choose the engine you prefer
+            prompt=f"Explain what happens during day {day} of a menstrual cycle, including phases like luteal, follicular, menstrual, and ovulation.",
+            temperature=0.5,
+            max_tokens=150,
+            top_p=1.0,
+            frequency_penalty=0.0,
+            presence_penalty=0.0
+        )
+        return response.choices[0].text.strip()
+    except Exception as e:
+        print(f"Error fetching information from ChatGPT: {e}")
+        return "Error fetching information."
+
+@app.route('/fetch', methods=['GET'])
+def fetch():
+    """
+    Endpoint to fetch and display information for each day of the menstrual cycle.
+    """
+    day = request.args.get('day', 1, type=int)
+    information = fetch_information_from_chatgpt(day)
+    return render_template('information.html', day=day, information=information)
 
 from datetime import datetime, timedelta
 
