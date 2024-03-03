@@ -4,7 +4,7 @@ from openai import OpenAI
 
 client = OpenAI(
     # Replace with your valid API key
-    api_key="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"
+    api_key=""
 )
 
 def chat_gpt(message):
