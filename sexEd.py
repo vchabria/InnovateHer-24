@@ -27,5 +27,4 @@ def chat_response(message, history):  # Only takes one argument `message`
 
     return content
 
-chat_demo = gr.ChatInterface(chat_response)
-chat_demo.launch()
+chat_demo = gr.ChatInterface(fn=chat_response, title="SexEd Bot")

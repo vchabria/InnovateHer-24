@@ -4,7 +4,7 @@ from openai import OpenAI
 
 client = OpenAI(
     # Replace with your valid API key
-    api_key="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"
+    api_key="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"
 )
 
 def chat_gpt(message):
@@ -27,5 +27,5 @@ def chat_response(message, history):  # Only takes one argument `message`
 
     return content
 
-chat_demo = gr.ChatInterface(chat_response)
-chat_demo.launch()
+chat_demo = gr.ChatInterface(fn=chat_response, title="Phases Bot")
+chat_demo.launch(share=True,server_port=8080)
