@@ -1,12 +1,9 @@
-
-import openai
 from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime, timedelta
+from openai import OpenAI
 
-app = Flask(__name__)
+app = Flask(__name__) 
 
-# Your OpenAI API key
-openai.api_key = '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'
 
 def fetch_information_from_chatgpt(day):
     """
@@ -26,6 +23,16 @@ def fetch_information_from_chatgpt(day):
     except Exception as e:
         print(f"Error fetching information from ChatGPT: {e}")
         return "Error fetching information."
+    
+@app.route('/chat', methods=['POST'])
+def chat():
+    message = request.form['message']
+    response = openai.Completion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": message}]
+    )
+    return jsonify(response.choices[0].message.content.strip())
+
 
 @app.route('/fetch', methods=['GET'])
 def fetch():
@@ -159,6 +166,4 @@ def track():
                            pregnancy_chance=pregnancy_chance, days_before_period=days_before_period, phase=phase)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
-
-
+    app.run(debug=True, port=5008)

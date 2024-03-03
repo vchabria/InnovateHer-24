@@ -34,5 +34,35 @@
         });
     });
     </script>
+
+    <!-- Chat Interface -->
+    <h2>Chat with our Bot</h2>
+    <form id="chatForm">
+        <textarea name="message" id="message"></textarea>
+        <button type="submit">Send</button>
+    </form>
+    <div id="chatResponse"></div>
+
+    <script>
+    document.getElementById('chatForm').onsubmit = function(event) {
+        event.preventDefault();
+        var message = document.getElementById('message').value;
+        fetch('/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: message }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('chatResponse').innerText = data.response;
+        })
+        .catch(error => {
+            document.getElementById('chatResponse').innerText = 'Error: Could not retrieve response';
+        });
+    };
+    </script>
+
 </body>
 </html>
